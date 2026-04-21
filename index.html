@@ -293,61 +293,55 @@
             </div>
         </section>
 
-        <section id="music" class="reveal">
-            <div class="section-header">
-                <h2>🎵 سيمفونية الحب</h2>
-                <p>الأغاني التي شهدت على أجمل أيامنا.. استمعي بقلبك.</p>
+<section id="music" class="reveal">
+    <div class="section-header">
+        <h2>🎵 سيمفونية الحب</h2>
+        <p>الأغاني التي شهدت على أجمل أيامنا.. استمعي بقلبك.</p>
+    </div>
+    <div class="music-container">
+        <div class="visualizer-box" id="visualizer"></div>
+        <div class="custom-player">
+            <div style="display: flex; gap: 15px;">
+                <button class="play-btn" onclick="prevTrack()">⏮</button>
+                <button class="play-btn" id="playBtn">▶</button>
+                <button class="play-btn" onclick="nextTrack()">⏭</button>
             </div>
-            <div class="music-container">
-                <div class="visualizer-box" id="visualizer">
-                    </div>
-                <div class="custom-player">
-                    <button class="play-btn" id="playBtn">▶</button>
-                    <div>
-                        <h3 id="trackName">اللي بينا</h3>
-                        <p style="color: #94a3b8;"> دائماً بجانبك في كل خطوة</p>
-                    </div>
-                </div>
-                <audio id="audioElement">
-                    <source src="MUSIC/اتصالحنا.mpeg" type="audio/mpeg">
-                </audio>
+            <div style="margin-right: 20px;">
+                <h3 id="trackName">اللي بينا</h3>
+                <p id="artistName" style="color: #94a3b8;">دائماً تأكدي أنني سأظل بجانب</p>
             </div>
-            
-        </section>
+        </div>
+        <audio id="audioElement">
+            <source src="MUSIC/اتصالحنا.mpeg" type="audio/mpeg">
+        </audio>
+        
+    </div>
+</section>
 
-              <section id="music" class="reveal">
-            <div class="section-header">
-                <h2>🎵 سيمفونية الحب</h2>
-                <p>الأغاني التي شهدت على أجمل أيامنا.. استمعي بقلبك.</p>
-            </div>
-            <div class="music-container">
-                <div class="visualizer-box" id="visualizer">
-                    </div>
-                <div class="custom-player">
-                    <button class="play-btn" id="playBtn">▶</button>
-                    <div>
-                        <h3 id="trackName">اللي بينا</h3>
-                        <p style="color: #94a3b8;"> دائماً بجانبك في كل خطوة</p>
-                    </div>
-                </div>
-                <audio id="audioElement">
-                    <source src="MUSIC/اتصالحنا.mpeg" type="audio/mpeg">
-                </audio>
-            </div>
-            
-        </section>
+<section id="video" class="reveal">
+    <div class="section-header">
+        <h2>🎥 فيديو من العمر</h2>
+        <p>لحظات عفوية، لكنها تعني لي الكثير.</p>
+    </div>
+    <div class="video-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; width: 100%;">
+        <div class="video-wrapper">
+            <video controls poster="poster1.jpg">
+                <source src="video1.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="video-wrapper">
+            <video controls poster="poster2.jpg">
+                <source src="video2.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="video-wrapper">
+            <video controls poster="poster3.jpg">
+                <source src="video3.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+</section>
 
-        <section id="video" class="reveal">
-            <div class="section-header">
-                <h2>🎥 فيديو من العمر</h2>
-                <p>لحظات عفوية، لكنها تعني لي الكثير.</p>
-            </div>
-            <div class="video-wrapper">
-                <video controls poster="poster.jpg">
-                    <source src="your-video.mp4" type="video/mp4">
-                </video>
-            </div>
-        </section>
 
         <section id="thoughts" class="reveal">
             <div class="section-header">
@@ -370,7 +364,7 @@
 
     <div id="birthday-dimension">
         <h1 class="bday-text">Happy Birthday!</h1>
-        <h2 style="font-size: 4rem; font-family: 'Cairo'; margin-bottom: 30px;">[اسمها هنا]</h2>
+        <h2 style="font-size: 4rem; font-family: 'Cairo'; margin-bottom: 30px;">[MY BESSSSSO]</h2>
         <div style="font-size: 150px; animation: float 3s infinite;">🎂</div>
         <p style="font-size: 2rem; max-width: 800px; margin-top: 40px; padding: 0 20px;">
             اليوم تكتمل سنينك الـ 21، ويبدأ أجمل فصل في عمرك.
@@ -482,47 +476,61 @@
             }, { threshold: 0.2 });
             document.querySelectorAll('.reveal').forEach(sec => observer.observe(sec));
         }
+/* F. Music Playlist Logic */
+const tracks = [
+    { name: "شكراً من هنا لبكرة", artist: "احبك لنهاية العمر يا كل العمر ", src: "MUSIC/واقفة.mpeg" },
+    { name: "في قصر بعيد", artist: "معك لنهاية المطاف لاخر لحظة بحياتي", src: "MUSIC/اميرة .mpeg" },
+    { name: "سؤال بسيط", artist: "انتي العوض بعض التعب ، لا اري غيرك يا وردتي", src: "MUSIC/بنادي.mpeg" },
+    { name: "قلبي شاورلي عليكي", artist: "من بين اشباهك الاربعين اختارك قلبي ان تكوني له", src: "MUSIC/قلبي شاو.mpeg" },
+    { name: "دبت بتفاصلية", artist: "دائماً ستكونين انتي افضل اختيار في حياتي", src: "MUSIC/دبت.mpeg" }
+    
+];
 
-        /* F. Music Visualizer Logic */
-        const visualizer = document.getElementById('visualizer');
-        const audio = document.getElementById('audioElement');
-        const playBtn = document.getElementById('playBtn');
-        const bars = [];
+let currentTrackIdx = 0;
+const audio = document.getElementById('audioElement');
+const trackName = document.getElementById('trackName');
+const artistName = document.getElementById('artistName');
 
-        for (let i = 0; i < 40; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'bar';
-            visualizer.appendChild(bar);
-            bars.push(bar);
-        }
+function loadTrack(idx) {
+    const track = tracks[idx];
+    audio.src = track.src;
+    trackName.innerText = track.name;
+    artistName.innerText = track.artist;
+}
 
-        playBtn.onclick = () => {
-            if(audio.paused) {
-                audio.play();
-                playBtn.innerText = "⏸";
-                animateVisualizer();
-            } else {
-                audio.pause();
-                playBtn.innerText = "▶";
-            }
-        };
+function nextTrack() {
+    currentTrackIdx = (currentTrackIdx + 1) % tracks.length;
+    loadTrack(currentTrackIdx);
+    audio.play();
+    playBtn.innerText = "⏸";
+    animateVisualizer();
+}
 
-        function animateVisualizer() {
-            if(!audio.paused) {
-                bars.forEach(bar => {
-                    const height = Math.random() * 100 + 20;
-                    bar.style.height = height + 'px';
-                    bar.style.background = `rgba(14, 165, 233, ${height/150})`;
-                });
-                setTimeout(animateVisualizer, 100);
-            } else {
-                bars.forEach(bar => bar.style.height = '20px');
-            }
-        }
+function prevTrack() {
+    currentTrackIdx = (currentTrackIdx - 1 + tracks.length) % tracks.length;
+    loadTrack(currentTrackIdx);
+    audio.play();
+    playBtn.innerText = "⏸";
+    animateVisualizer();
+}
 
+// تحديث بسيط لمنطق زر التشغيل الأصلي ليتماشى مع القائمة
+playBtn.onclick = () => {
+    if(audio.paused) {
+        audio.play();
+        playBtn.innerText = "⏸";
+        animateVisualizer();
+    } else {
+        audio.pause();
+        playBtn.innerText = "▶";
+    }
+};
+
+// عند انتهاء الأغنية، شغل التالية تلقائياً
+audio.onended = () => nextTrack();
         /* G. Typewriter Elite Engine */
         const textToType = [
-            "أنتِ لستِ مجرد سنة مرت من عمري..",
+            "أنتِ لستِ مجرد عام مرت من عمري..",
             "أنتِ العمر الذي بدأ حين التقيت بكِ.",
             "كل تفصيل في هذا الموقع هو تعبير بسيط عن حبي العميق.",
             "عيد ميلادك هو عيد لقلبي قبل أن يكون عيداً لكِ.",
