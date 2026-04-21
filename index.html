@@ -237,6 +237,77 @@
         -------------------------------------------------- */
         #vfx-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
 
+        /* --------------------------------------------------
+           تعديلات الاستجابة للهواتف (Responsive Fixes)
+           هذا الجزء لا يحذف كودك بل يحسنه فقط للشاشات الصغيرة
+        -------------------------------------------------- */
+        @media (max-width: 768px) {
+            /* 1. إصلاح شاشة القفل لتناسب حجم اليد */
+            .vault-card {
+                padding: 2.5rem 1.5rem;
+                width: 95%;
+                border-radius: 30px;
+            }
+            .vault-card h1 { font-size: 1.8rem; }
+            .pass-input { 
+                font-size: 1.5rem; 
+                letter-spacing: 8px; /* تقليل المسافة لتناسب عرض الشاشة */
+            }
+
+            /* 2. ضبط هوامش الأقسام */
+            section {
+                padding: 60px 20px;
+                min-height: -webkit-fill-available; /* حل لمشكلة الارتفاع في سفاري */
+            }
+
+            /* 3. جعل الجاليري مرن */
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+            }
+            .gallery-item {
+                height: 350px; /* تقليل الارتفاع قليلاً للموبايل */
+            }
+
+            /* 4. ضبط حجم نص المفاجأة النهائية */
+            .bday-text {
+                font-size: clamp(3rem, 15vw, 5rem);
+                line-height: 1.2;
+            }
+
+            /* 5. إظهار الماوس العادي في الموبايل */
+            /* لأن الموبايل يعتمد على اللمس، وكود cursor: none يخفي التفاعل */
+            * { cursor: auto !important; }
+            #cursor-main, #cursor-dot { display: none !important; }
+
+            /* 6. ضبط المشغل الموسيقي */
+            .custom-player {
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+            }
+            .play-btn {
+                width: 60px;
+                height: 60px;
+            }
+
+            /* 7. ضبط الخواطر */
+            .thoughts-content {
+                font-size: 1.4rem;
+                padding-right: 20px;
+                text-align: center;
+                border-right: none;
+                border-bottom: 3px solid var(--primary-blue);
+                padding-bottom: 20px;
+            }
+        }
+
+        /* تعديلات إضافية للشاشات الصغيرة جداً (مثل iPhone SE) */
+        @media (max-width: 380px) {
+            .pass-input { letter-spacing: 4px; font-size: 1.2rem; }
+            .section-header h2 { font-size: 2rem; }
+        }
+        
     </style>
 </head>
 <body>
