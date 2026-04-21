@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Blue Dream | الهدية الأعظم 💙</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&family=Reem+Kufi:wght@400;700&family=Dancing+Script:wght@700&family=Playfair+Display:italic,wght@1,900&family=Tajawal:wght@200;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --------------------------------------------------
+           2. المتغيرات والأساسيات (CSS VARIABLES)
+        -------------------------------------------------- */
+        :root {
+            --bg-deep: #010409;
+            --primary-blue: #0ea5e9;
+            --secondary-blue: #1e40af;
+            --accent-cyan: #22d3ee;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --romantic-red: #e11d48;
+            --text-glow: 0 0 10px rgba(14, 165, 233, 0.5);
+            --transition-smooth: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        body, html {
+            background-color: var(--bg-deep);
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+
+        /* تخصيص السكرول بار */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 10px; }
+
+        /* --------------------------------------------------
+           3. شاشة التحميل السينمائية (PRELOADER)
+        -------------------------------------------------- */
+        #preloader {
+            position: fixed; inset: 0; background: #000;
+            z-index: 10000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 1.5s ease;
+        }
+
+        .loader-box { text-align: center; }
+        .loading-text {
+            font-family: 'Dancing Script', cursive; font-size: 3rem;
+            background: linear-gradient(90deg, #000, #0ea5e9, #000);
+            background-size: 200% 100%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine { 0% { background-position: 100% 0%; } 100% { background-position: -100% 0%; } }
+
+        /* --------------------------------------------------
+           4. نظام الماوس التفاعلي (CUSTOM CURSOR)
+        -------------------------------------------------- */
+        #cursor-main {
+            position: fixed; width: 40px; height: 40px;
+            border: 1px solid var(--primary-blue); border-radius: 50%;
+            pointer-events: none; z-index: 99999;
+            transition: transform 0.1s ease, width 0.3s, height 0.3s;
+            transform: translate(-50%, -50%);
+        }
+        #cursor-dot {
+            position: fixed; width: 6px; height: 6px;
+            background: #fff; border-radius: 50%;
+            pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%);
+        }
+
+        /* --------------------------------------------------
+           5. شاشة السر (THE VAULT)
+        -------------------------------------------------- */
+        #vault-screen {
+            position: fixed; inset: 0; z-index: 9500;
+            display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle at center, #0c4a6e 0%, #010409 100%);
+            transition: transform 1.2s cubic-bezier(0.87, 0, 0.13, 1);
+        }
+
+        .vault-card {
+            background: var(--glass); backdrop-filter: blur(25px);
+            padding: 5rem; border-radius: 50px; border: 1px solid var(--glass-border);
+            text-align: center; width: 90%; max-width: 600px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+        }
+
+        .vault-card h1 { font-family: 'Reem Kufi'; font-size: 2.5rem; margin-bottom: 20px; color: var(--primary-blue); }
+
+        .pass-input-wrapper { position: relative; margin: 40px 0; }
+        .pass-input {
+            width: 100%; background: transparent; border: none;
+            border-bottom: 2px solid var(--glass-border); padding: 15px;
+            color: #fff; font-size: 2rem; text-align: center;
+            letter-spacing: 15px; outline: none; transition: 0.5s;
+        }
+        .pass-input:focus { border-bottom-color: var(--primary-blue); box-shadow: 0 10px 20px -10px var(--primary-blue); }
+
+        .unlock-button {
+            background: var(--primary-blue); color: #fff; border: none;
+            padding: 20px 60px; border-radius: 100px; font-weight: 900;
+            letter-spacing: 2px; cursor: pointer; transition: 0.4s;
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.3);
+        }
+        .unlock-button:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 30px 60px rgba(14, 165, 233, 0.5); }
+
+        /* --------------------------------------------------
+           6. الهيكل الرئيسي للأقسام (MAIN LAYOUT)
+        -------------------------------------------------- */
+        #app-content { display: none; opacity: 0; }
+
+        section {
+            min-height: 100vh; padding: 120px 10%;
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+
+        .section-header {
+            margin-bottom: 80px; opacity: 0; transform: translateY(50px); transition: 1s ease;
+        }
+        .active .section-header { opacity: 1; transform: translateY(0); }
+
+        .section-header h2 {
+            font-family: 'Reem Kufi'; font-size: clamp(2rem, 6vw, 5rem);
+            line-height: 1.1; margin-bottom: 20px;
+        }
+        .section-header p { color: var(--text-dim); font-size: 1.2rem; max-width: 600px; }
+
+        /* --------------------------------------------------
+           7. قسم الصور (3D MASONRY GALLERY)
+        -------------------------------------------------- */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; perspective: 2000px;
+        }
+
+        .gallery-item {
+            height: 450px; border-radius: 30px; overflow: hidden;
+            position: relative; border: 1px solid var(--glass-border);
+            background: var(--glass); transform-style: preserve-3d;
+            transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 1.2s; filter: grayscale(30%) brightness(0.8);
+        }
+        .gallery-item:hover { transform: scale(1.02) rotateY(10deg) rotateX(5deg); }
+        .gallery-item:hover img { filter: grayscale(0%) brightness(1.1); transform: scale(1.1); }
+
+        /* --------------------------------------------------
+           8. قسم الأغاني مع الـ Visualizer
+        -------------------------------------------------- */
+        .music-container {
+            width: 100%; max-width: 900px; align-self: center;
+        }
+
+        .visualizer-box {
+            height: 150px; width: 100%; display: flex;
+            align-items: flex-end; justify-content: center; gap: 4px;
+            margin-bottom: 40px;
+        }
+        .bar {
+            width: 8px; height: 20px; background: var(--primary-blue);
+            border-radius: 10px; transition: height 0.1s ease;
+        }
+
+        .custom-player {
+            background: var(--glass); backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 40px; border: 1px solid var(--glass-border);
+            display: flex; align-items: center; gap: 30px;
+        }
+
+        .play-btn {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: var(--primary-blue); border: none;
+            color: white; font-size: 2rem; cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* --------------------------------------------------
+           9. قسم الفيديوهات (CINEMATIC VIDEO CARDS)
+        -------------------------------------------------- */
+        .video-wrapper {
+            width: 100%; max-width: 1000px; border-radius: 40px;
+            overflow: hidden; border: 1px solid var(--glass-border);
+            position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+        }
+        video { width: 100%; display: block; }
+
+        /* --------------------------------------------------
+           10. قسم الخواطر (TYPEWRITER ELITE)
+        -------------------------------------------------- */
+        .thoughts-content {
+            font-size: clamp(1.5rem, 4vw, 3rem); font-family: 'Playfair Display', serif;
+            line-height: 1.6; text-align: right; border-right: 4px solid var(--primary-blue);
+            padding-right: 40px; min-height: 300px;
+        }
+
+        /* --------------------------------------------------
+           11. المفاجأة النهائية (THE PORTAL)
+        -------------------------------------------------- */
+        .final-trigger {
+            width: 250px; height: 250px; border-radius: 50%;
+            background: radial-gradient(circle, var(--primary-blue), transparent);
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; position: relative; align-self: center;
+        }
+        .final-trigger::after {
+            content: ''; position: absolute; inset: -20px;
+            border: 2px dashed var(--primary-blue); border-radius: 50%;
+            animation: rotateFull 10s linear infinite;
+        }
+
+        @keyframes rotateFull { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        #birthday-dimension {
+            position: fixed; inset: 0; background: var(--romantic-red);
+            z-index: 20000; display: none; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            animation: portalOpen 1.5s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+        }
+
+        @keyframes portalOpen { 0% { clip-path: circle(0% at 50% 50%); } 100% { clip-path: circle(150% at 50% 50%); } }
+
+        .bday-text { font-family: 'Dancing Script'; font-size: 7rem; margin-bottom: 20px; }
+
+        /* --------------------------------------------------
+           12. VFX CANVAS
+        -------------------------------------------------- */
+        #vfx-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-box">
+            <h1 class="loading-text">Preparing the Magic...</h1>
+            <div style="margin-top: 20px; width: 200px; height: 2px; background: rgba(255,255,255,0.1); margin: 20px auto;">
+                <div id="progress" style="width: 0%; height: 100%; background: var(--primary-blue); transition: 0.1s;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cursor-main"></div>
+    <div id="cursor-dot"></div>
+
+    <canvas id="vfx-canvas"></canvas>
+
+    <div id="vault-screen">
+        <div class="vault-card">
+            <h1>PRIVATE ACCESS</h1>
+            <p style="color: #94a3b8;">هذا الموقع محمي بالحب. أدخلي الرمز السري للمتابعة.</p>
+            <div class="pass-input-wrapper">
+                <input type="password" id="vaultKey" class="pass-input" maxlength="4" placeholder="••••">
+            </div>
+            <button class="unlock-button" onclick="validateVault()">UNLOCK EXPERIENCE</button>
+            <p id="vaultHint" style="margin-top: 20px; height: 20px; font-size: 0.9rem;"></p>
+        </div>
+    </div>
+
+    <div id="app-content">
+        
+        <section id="hero" class="reveal">
+            <div class="section-header">
+                <p style="letter-spacing: 5px; color: var(--primary-blue);">2026 BIRTHDAY EDITION</p>
+                <h2>إلى من سرقت قلبي.. 💙</h2>
+                <p>مرحباً بكِ في عالم صُمم خصيصاً لأجلك، انزلي للأسفل لاستعادة أجمل لحظاتنا.</p>
+            </div>
+            <div style="font-size: 2rem; animation: bounce 2s infinite; text-align: center;">↓</div>
+        </section>
+
+        <section id="gallery" class="reveal">
+            <div class="section-header">
+                <h2>📸 معرض الذكريات</h2>
+                <p>كل صورة هنا تحمل قصة، ضحكة، ووعداً بالبقاء معاً للأبد.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="photo1.jpg"></div>
+                <div class="gallery-item"><img src="photo2.jpg"></div>
+                <div class="gallery-item"><img src="photo3.jpg"></div>
+                <div class="gallery-item"><img src="photo4.jpg"></div>
+                <div class="gallery-item"><img src="photo5.jpg"></div>
+                <div class="gallery-item"><img src="photo6.jpg"></div>
+            </div>
+        </section>
+
+        <section id="music" class="reveal">
+            <div class="section-header">
+                <h2>🎵 سيمفونية الحب</h2>
+                <p>الأغاني التي شهدت على أجمل أيامنا.. استمعي بقلبك.</p>
+            </div>
+            <div class="music-container">
+                <div class="visualizer-box" id="visualizer">
+                    </div>
+                <div class="custom-player">
+                    <button class="play-btn" id="playBtn">▶</button>
+                    <div>
+                        <h3 id="trackName">اسم الأغنية الحالية</h3>
+                        <p style="color: #94a3b8;">الفنان المفضل</p>
+                    </div>
+                </div>
+                <audio id="audioElement">
+                    <source src="your-song.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </section>
+
+        <section id="video" class="reveal">
+            <div class="section-header">
+                <h2>🎥 فيديو من العمر</h2>
+                <p>لحظات عفوية، لكنها تعني لي الكثير.</p>
+            </div>
+            <div class="video-wrapper">
+                <video controls poster="poster.jpg">
+                    <source src="your-video.mp4" type="video/mp4">
+                </video>
+            </div>
+        </section>
+
+        <section id="thoughts" class="reveal">
+            <div class="section-header">
+                <h2>✍️ خواطر مبعثرة</h2>
+                <p>ما يعجز اللسان عن قوله، يكتبه القلب هنا.</p>
+            </div>
+            <div class="thoughts-content" id="typewriter"></div>
+        </section>
+
+        <section id="final" class="reveal" style="align-items: center;">
+            <div class="section-header" style="text-align: center;">
+                <h2>🎁 حان وقت الهدية؟</h2>
+                <p>اضغطي على الهالة الزرقاء لفتح البعد الآخر.</p>
+            </div>
+            <div class="final-trigger" onclick="openBirthdayDimension()">
+                <span style="font-size: 3rem; z-index: 2;">💙</span>
+            </div>
+        </section>
+    </div>
+
+    <div id="birthday-dimension">
+        <h1 class="bday-text">Happy Birthday!</h1>
+        <h2 style="font-size: 4rem; font-family: 'Cairo'; margin-bottom: 30px;">[اسمها هنا]</h2>
+        <div style="font-size: 150px; animation: float 3s infinite;">🎂</div>
+        <p style="font-size: 2rem; max-width: 800px; margin-top: 40px; padding: 0 20px;">
+            اليوم تكتمل سنينك الـ 21، ويبدأ أجمل فصل في عمرك.
+            أتمنى لكِ عاماً يشبه طهر قلبكِ وجمال عينيكِ.
+        </p>
+        <button class="unlock-button" style="background: white; color: var(--romantic-red); margin-top: 50px;" onclick="location.reload()">أحبك للأبد 💙</button>
+    </div>
+
+    <script>
+        /* A. Preloader Logic */
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 10;
+            document.getElementById('progress').style.width = progress + '%';
+            if (progress >= 100) {
+                clearInterval(progressInterval);
+                setTimeout(() => {
+                    document.getElementById('preloader').style.opacity = '0';
+                    setTimeout(() => document.getElementById('preloader').remove(), 1500);
+                }, 500);
+            }
+        }, 150);
+
+        /* B. Custom Cursor */
+        const cursor = document.getElementById('cursor-main');
+        const dot = document.getElementById('cursor-dot');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+        });
+
+        /* C. VFX Background Engine (Interactive Particles) */
+        const canvas = document.getElementById('vfx-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speedX: Math.random() * 0.5 - 0.25,
+                    speedY: Math.random() * 0.5 - 0.25,
+                    opacity: Math.random()
+                });
+            }
+        }
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.fillStyle = `rgba(14, 165, 233, ${p.opacity})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if(p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+        initCanvas();
+        drawParticles();
+        window.addEventListener('resize', initCanvas);
+
+        /* D. Vault Logic */
+        function validateVault() {
+            const key = document.getElementById('vaultKey').value;
+            const screen = document.getElementById('vault-screen');
+            const app = document.getElementById('app-content');
+            
+            if(key === "1234") {
+                screen.style.transform = "translateY(-100%)";
+                setTimeout(() => {
+                    screen.style.display = 'none';
+                    app.style.display = 'block';
+                    setTimeout(() => {
+                        app.style.opacity = '1';
+                        initScrollObserver();
+                        startTypewriter();
+                    }, 100);
+                }, 1000);
+            } else {
+                const hint = document.getElementById('vaultHint');
+                hint.innerText = "أعرف أنكِ تستطيعين… حاولي مرة أخرى ❤️";
+                hint.style.color = "#fb7185";
+                document.querySelector('.vault-card').animate([
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(0)' }
+                ], { duration: 300 });
+            }
+        }
+
+        /* E. Scroll Reveal Engine */
+        function initScrollObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.2 });
+            document.querySelectorAll('.reveal').forEach(sec => observer.observe(sec));
+        }
+
+        /* F. Music Visualizer Logic */
+        const visualizer = document.getElementById('visualizer');
+        const audio = document.getElementById('audioElement');
+        const playBtn = document.getElementById('playBtn');
+        const bars = [];
+
+        for (let i = 0; i < 40; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            visualizer.appendChild(bar);
+            bars.push(bar);
+        }
+
+        playBtn.onclick = () => {
+            if(audio.paused) {
+                audio.play();
+                playBtn.innerText = "⏸";
+                animateVisualizer();
+            } else {
+                audio.pause();
+                playBtn.innerText = "▶";
+            }
+        };
+
+        function animateVisualizer() {
+            if(!audio.paused) {
+                bars.forEach(bar => {
+                    const height = Math.random() * 100 + 20;
+                    bar.style.height = height + 'px';
+                    bar.style.background = `rgba(14, 165, 233, ${height/150})`;
+                });
+                setTimeout(animateVisualizer, 100);
+            } else {
+                bars.forEach(bar => bar.style.height = '20px');
+            }
+        }
+
+        /* G. Typewriter Elite Engine */
+        const textToType = [
+            "أنتِ لستِ مجرد سنة مرت من عمري..",
+            "أنتِ العمر الذي بدأ حين التقيت بكِ.",
+            "كل تفصيل في هذا الموقع هو تعبير بسيط عن حبي العميق.",
+            "عيد ميلادك هو عيد لقلبي قبل أن يكون عيداً لكِ.",
+            "كل عام وأنتِ بقلبي، وبجانبي، وكل حياتي."
+        ];
+        let lineIdx = 0; let charIdx = 0;
+        function startTypewriter() {
+            const target = document.getElementById('typewriter');
+            if(lineIdx < textToType.length) {
+                if(charIdx < textToType[lineIdx].length) {
+                    target.innerHTML += textToType[lineIdx].charAt(charIdx);
+                    charIdx++;
+                    setTimeout(startTypewriter, 50);
+                } else {
+                    target.innerHTML += "<br><br>";
+                    lineIdx++; charIdx = 0;
+                    setTimeout(startTypewriter, 1000);
+                }
+            }
+        }
+
+        /* H. Final Portal Celebration */
+        function openBirthdayDimension() {
+            document.getElementById('birthday-dimension').style.display = 'flex';
+            // Start Confetti logic
+            setInterval(createHeart, 200);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💙';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+            heart.style.zIndex = '25000';
+            heart.style.transition = '5s linear';
+            document.body.appendChild(heart);
+            setTimeout(() => {
+                heart.style.transform = `translateY(-110vh) rotate(${Math.random()*360}deg)`;
+                setTimeout(() => heart.remove(), 5000);
+            }, 100);
+        }
+
+    </script>
+</body>
+</html>
