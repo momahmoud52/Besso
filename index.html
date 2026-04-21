@@ -260,7 +260,7 @@
             <h1>PRIVATE ACCESS</h1>
             <p style="color: #94a3b8;">هذا الموقع محمي بالحب. أدخلي الرمز السري للمتابعة.</p>
             <div class="pass-input-wrapper">
-                <input type="password" id="vaultKey" class="pass-input" maxlength="4" placeholder="••••">
+                <input type="password" id="vaultKey" class="pass-input" maxlength="8" placeholder="••••••••">
             </div>
             <button class="unlock-button" onclick="validateVault()">UNLOCK EXPERIENCE</button>
             <p id="vaultHint" style="margin-top: 20px; height: 20px; font-size: 0.9rem;"></p>
@@ -424,7 +424,7 @@
             const screen = document.getElementById('vault-screen');
             const app = document.getElementById('app-content');
             
-            if(key === "0000") {
+            if(key === "1-5-2005") {
                 screen.style.transform = "translateY(-100%)";
                 setTimeout(() => {
                     screen.style.display = 'none';
